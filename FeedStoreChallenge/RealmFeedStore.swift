@@ -38,10 +38,15 @@ public class RealmFeedStore: FeedStore {
 		
 		do {
 			try realm.write {
-				let realmCache = cache.local
-				realm.add(realmCache)
+				if let realmCache = realm.objects(RealmCache.self).first {
+					realm.delete(realmCache)
+				}
+				
+				realm.add(cache.local)
 				completion(nil)
 			}
+			
+			
 		} catch {
 			completion(error)
 		}
