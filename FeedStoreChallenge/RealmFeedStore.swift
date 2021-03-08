@@ -32,10 +32,7 @@ public class RealmFeedStore: FeedStore {
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 		do {
 			try realm.write {
-				if let realmCache = realm.objects(RealmCache.self).first {
-					realm.delete(realmCache)
-				}
-				
+				deleteRealmCacheIfNeeded()
 				completion(nil)
 			}
 		} catch {
@@ -48,10 +45,7 @@ public class RealmFeedStore: FeedStore {
 		
 		do {
 			try realm.write {
-				if let realmCache = realm.objects(RealmCache.self).first {
-					realm.delete(realmCache)
-				}
-				
+				deleteRealmCacheIfNeeded()
 				realm.add(cache.local)
 				completion(nil)
 			}
@@ -67,6 +61,12 @@ public class RealmFeedStore: FeedStore {
 			return completion(.empty)
 		}
 		completion(.found(feed: realmCache.local, timestamp: realmCache.timestamp))
+	}
+	
+	private func deleteRealmCacheIfNeeded() {
+		if let realmCache = realm.objects(RealmCache.self).first {
+			realm.delete(realmCache)
+		}
 	}
 }
 
