@@ -11,7 +11,7 @@ import RealmSwift
 
 public class RealmFeedStore: FeedStore {
 	
-	private var realm: Realm!
+	private let configuration: Realm.Configuration
 	
 	private struct Cache {
 		let feed: [LocalFeedImage]
@@ -26,47 +26,52 @@ public class RealmFeedStore: FeedStore {
 	}
 	
 	public init(configuration: Realm.Configuration) {
-		self.realm = try! Realm(configuration: configuration)
+		self.configuration = configuration
 	}
 	
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 		do {
+			let realm = try self.getRealm()
 			try realm.write {
-				deleteRealmCacheIfNeeded()
+				realm.deleteAll()
 				completion(nil)
 			}
 		} catch {
 			completion(error)
 		}
+		
 	}
 	
 	public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
 		let cache = Cache(feed: feed, timestamp: timestamp)
 		
 		do {
+			let realm = try self.getRealm()
 			try realm.write {
-				deleteRealmCacheIfNeeded()
+				realm.deleteAll()
 				realm.add(cache.local)
 				completion(nil)
 			}
-			
-			
 		} catch {
 			completion(error)
 		}
 	}
 	
 	public func retrieve(completion: @escaping RetrievalCompletion) {
-		guard let realmCache = realm.objects(RealmCache.self).first else {
-			return completion(.empty)
+		do {
+			let realm = try self.getRealm()
+			guard let realmCache = realm.objects(RealmCache.self).first else {
+				return completion(.empty)
+			}
+			completion(.found(feed: realmCache.local, timestamp: realmCache.timestamp))
+		} catch {
+			completion(.failure(error))
 		}
-		completion(.found(feed: realmCache.local, timestamp: realmCache.timestamp))
+		
 	}
 	
-	private func deleteRealmCacheIfNeeded() {
-		if let realmCache = realm.objects(RealmCache.self).first {
-			realm.delete(realmCache)
-		}
+	private func getRealm() throws -> Realm {
+		return try Realm(configuration: configuration)
 	}
 }
 
