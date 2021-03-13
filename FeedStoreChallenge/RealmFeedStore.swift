@@ -75,7 +75,7 @@ public class RealmFeedStore: FeedStore {
 	}
 }
 
-public class RealmCache: Object {
+internal class RealmCache: Object {
 	var feed = List<RealmFeedImage>()
 	@objc dynamic var timestamp = Date()
 	
