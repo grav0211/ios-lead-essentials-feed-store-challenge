@@ -18,11 +18,11 @@ class FeedStoreIntegrationTests: XCTestCase {
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 		
-		try setupEmptyStoreState()
+		setupEmptyStoreState()
 	}
 	
 	override func tearDownWithError() throws {
-		try undoStoreSideEffects()
+		undoStoreSideEffects()
 		
 		try super.tearDownWithError()
 	}
