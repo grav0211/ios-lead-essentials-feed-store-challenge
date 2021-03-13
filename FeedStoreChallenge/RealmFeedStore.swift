@@ -13,18 +13,6 @@ public class RealmFeedStore: FeedStore {
 	
 	private let configuration: Realm.Configuration
 	
-	private struct Cache {
-		let feed: [LocalFeedImage]
-		let timestamp: Date
-		
-		var local: RealmCache {
-			let realmCache = RealmCache()
-			realmCache.feed.append(objectsIn: feed.map { $0.realmFeedImage })
-			realmCache.timestamp = timestamp
-			return realmCache
-		}
-	}
-	
 	public init(configuration: Realm.Configuration) {
 		self.configuration = configuration
 	}
@@ -34,8 +22,8 @@ public class RealmFeedStore: FeedStore {
 			let realm = try self.getRealm()
 			try realm.write {
 				realm.deleteAll()
-				completion(nil)
 			}
+			completion(nil)
 		} catch {
 			completion(error)
 		}
@@ -43,15 +31,17 @@ public class RealmFeedStore: FeedStore {
 	}
 	
 	public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-		let cache = Cache(feed: feed, timestamp: timestamp)
+		let cache = RealmCache()
+		cache.feed = feed.toRealmList()
+		cache.timestamp = timestamp
 		
 		do {
 			let realm = try self.getRealm()
 			try realm.write {
 				realm.deleteAll()
-				realm.add(cache.local)
-				completion(nil)
+				realm.add(cache)
 			}
+			completion(nil)
 		} catch {
 			completion(error)
 		}
@@ -81,5 +71,32 @@ internal class RealmCache: Object {
 	
 	var local: [LocalFeedImage] {
 		return feed.map { $0.local }
+	}
+}
+
+internal class RealmFeedImage: Object {
+	@objc dynamic var id = ""
+	@objc dynamic var desc: String?
+	@objc dynamic var location: String?
+	@objc dynamic var url = ""
+	
+	var local: LocalFeedImage {
+		return LocalFeedImage(id: UUID(uuidString: id)!, description: desc, location: location, url: URL(string: url)!)
+	}
+}
+
+private extension Array where Element == LocalFeedImage {
+
+	func toRealmList() -> List<RealmFeedImage> {
+		let list = List<RealmFeedImage> ()
+		forEach {
+			let realmImage = RealmFeedImage()
+			realmImage.id = $0.id.uuidString
+			realmImage.desc = $0.description
+			realmImage.location = $0.location
+			realmImage.url = $0.url.absoluteString
+			list.append(realmImage)
+		}
+		return list
 	}
 }

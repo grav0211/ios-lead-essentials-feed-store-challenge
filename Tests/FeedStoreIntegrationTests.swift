@@ -72,9 +72,11 @@ class FeedStoreIntegrationTests: XCTestCase {
 	
 	// - MARK: Helpers
 	
-	private func makeSUT() throws -> FeedStore {
+	private func makeSUT(file: StaticString = #filePath, line: UInt = #line) throws -> FeedStore {
 		let configuration = Realm.Configuration(fileURL: testSpecificStoreURL())
-		return RealmFeedStore(configuration: configuration)
+		let sut = RealmFeedStore(configuration: configuration)
+		trackForMemoryLeaks(sut, file: file, line: line)
+		return sut
 	}
 	
 	private func setupEmptyStoreState() {
@@ -95,5 +97,11 @@ class FeedStoreIntegrationTests: XCTestCase {
 	
 	private var storeCacheURL: URL {
 		FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+	}
+	
+	private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
+		addTeardownBlock { [weak instance] in
+			XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+		}
 	}
 }
