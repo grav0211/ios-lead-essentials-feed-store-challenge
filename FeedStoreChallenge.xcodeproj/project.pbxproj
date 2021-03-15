@@ -18,6 +18,7 @@
 		08CE2BB22285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BAD2285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift */; };
 		08CE2BB32285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BAE2285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift */; };
 		08CE2BB52285BEF100183A1B /* FeedStoreChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */; };
+		1A28052A25FEEAF900D7D5D4 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A28052925FEEAF900D7D5D4 /* XCTestCase+MemoryLeakTracking.swift */; };
 		1A280BA725EC5FC900439AC5 /* RealmFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A280BA625EC5FC900439AC5 /* RealmFeedStore.swift */; };
 		1A280BAC25EC641000439AC5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1A280BAB25EC641000439AC5 /* RealmSwift */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		08CE2BAD2285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableDeleteFeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		08CE2BAE2285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableInsertFeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreChallengeTests.swift; sourceTree = "<group>"; };
+		1A28052925FEEAF900D7D5D4 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		1A280BA625EC5FC900439AC5 /* RealmFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmFeedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 		08CE2B982285BBD100183A1B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1A28052825FEEAC000D7D5D4 /* Helpers */,
 				08CE2BA92285BCE700183A1B /* FeedStoreSpecs */,
 				08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */,
 				084BB13B24FE50A10091C705 /* FeedStoreIntegrationTests.swift */,
@@ -122,6 +125,14 @@
 				084BB13D24FE56830091C705 /* XCTestCase+FeedStoreHelpers.swift */,
 			);
 			path = FeedStoreSpecs;
+			sourceTree = "<group>";
+		};
+		1A28052825FEEAC000D7D5D4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1A28052925FEEAF900D7D5D4 /* XCTestCase+MemoryLeakTracking.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +263,7 @@
 			files = (
 				08CE2BB22285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift in Sources */,
 				08CE2BB02285BCE700183A1B /* FeedStoreSpecs.swift in Sources */,
+				1A28052A25FEEAF900D7D5D4 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				084BB13C24FE50A10091C705 /* FeedStoreIntegrationTests.swift in Sources */,
 				08CE2BB12285BCE700183A1B /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */,
 				08CE2BAF2285BCE700183A1B /* XCTestCase+FeedStoreSpecs.swift in Sources */,
